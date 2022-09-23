@@ -76,6 +76,46 @@ const files = {
       width: 128,
     }
   });`,
+  'test.js': `
+    import React from 'react'
+    import { Button} from 'antd'
+    console.log(111)
+    let Page = {};
+
+    Page({
+      data: {
+        test: '',
+        myName: 'abc',
+        dsCampaignList: [],
+      },
+
+      onLoad(query) {// 页面加载w
+        console.log('query---', query)
+      },
+
+      onReady() {// 页面加载完成
+        console.log('---22')
+
+      },
+      onChange3(){
+        this.setData({})
+      },
+      //测试未声明变量
+      test(){
+        return {
+          a: 1,
+          a: 2
+        }
+      },
+      testJSX(){
+        return <div>jsx</div>
+      },
+
+      onChange(e){
+        this.setData({dependency: e.target.value })
+      }
+
+    });`,
 };
 
 type State = {
@@ -88,7 +128,7 @@ type State = {
 export default class App extends React.Component<{}, State> {
   state = {
     files,
-    current: 'App.js',
+    current: 'test.js',
   };
 
   _handleValueChange = code =>

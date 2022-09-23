@@ -7,6 +7,7 @@ import * as React from 'react';
 import debounce from 'lodash/debounce';
 import TypingsWorker from './workers/typings.worker';
 import ESLintWorker from './workers/eslint.worker';
+console.log('ESLintWorker', ESLintWorker)
 import light from './themes/light';
 import dark from './themes/dark';
 import './Editor.css';
@@ -23,6 +24,7 @@ SimpleEditorModelResolverService.prototype.findModel = function(
     .getModels()
     .find(model => model.uri.toString() === resource.toString());
 };
+console.log('global', global)
 
 global.MonacoEnvironment = {
   getWorker(moduleId, label) {
@@ -170,6 +172,7 @@ export default class Editor extends React.Component<Props> {
   componentDidMount() {
     // Intialize the linter
     this._linterWorker = new ESLintWorker();
+    console.log('this._linterWorker', this._linterWorker)
     this._linterWorker.addEventListener('message', ({ data }: any) =>
       this._updateMarkers(data)
     );
@@ -221,7 +224,7 @@ export default class Editor extends React.Component<Props> {
     );
 
     this._openFile(path, value);
-    this._phantom.contentWindow.addEventListener('resize', this._handleResize);
+    // this._phantom.contentWindow.addEventListener('resize', this._handleResize);
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -255,11 +258,11 @@ export default class Editor extends React.Component<Props> {
     this._typingsWorker && this._typingsWorker.termnate();
     this._subscription && this._subscription.dispose();
     this._editor && this._editor.dispose();
-    this._phantom &&
-      this._phantom.contentWindow.removeEventListener(
-        'resize',
-        this._handleResize
-      );
+    // this._phantom &&
+    //   this._phantom.contentWindow.removeEventListener(
+    //     'resize',
+    //     this._handleResize
+    //   );
   }
 
   clearSelection() {
@@ -361,6 +364,7 @@ export default class Editor extends React.Component<Props> {
 
   _updateMarkers = ({ markers, version }: any) => {
     requestAnimationFrame(() => {
+      console.log('_updateMarkers', markers, version)
       const model = this._editor.getModel();
 
       if (model && model.getVersionId() === version) {
@@ -391,20 +395,7 @@ export default class Editor extends React.Component<Props> {
           overflow: 'hidden',
         }}
       >
-        <iframe
-          ref={c => (this._phantom = c)}
-          type="text/html"
-          style={{
-            display: 'block',
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            height: '100%',
-            width: '100%',
-            pointerEvents: 'none',
-            opacity: 0,
-          }}
-        />
+     
         <div
           ref={c => (this._node = c)}
           style={{ display: 'flex', flex: 1, overflow: 'hidden' }}

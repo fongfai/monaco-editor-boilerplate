@@ -1,15 +1,20 @@
 {
-  "parser": "babel-eslint",
+  "parser": "espree",
   "parserOptions": {
-    "sourceType": "module"
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+        "jsx": true,
+        "modules": true,
+        "experimentalObjectRestSpread": true
+    }
   },
   "env": {
     "es6": true
   },
   "plugins": [
     "babel",
-    "react",
-    "react-native"
+    "react"
   ],
   "globals": {
     "__DEV__": false,
@@ -48,6 +53,7 @@
     "XMLHttpRequest": false
   },
   "rules": {
+    "no-undefined": "warning",
     "constructor-super": "error",
     "no-case-declarations": "error",
     "no-class-assign": "error",
